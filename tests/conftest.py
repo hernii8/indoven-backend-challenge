@@ -7,5 +7,3 @@ from src.infra.storage import Storage
 def reset_storage() -> Generator[None, Any, Any]:
     yield
     Storage.reset()
-
-    print("R", Storage._instance)
