@@ -1,26 +1,19 @@
-from dataclasses import dataclass, field
-from typing import List, TypedDict
+from dataclasses import dataclass
+from src.infra.storage import Storage, UserModel
 from src.domain.not_found_error import NotFoundError
 from src.domain.user import User
 
 
-class UserModel(TypedDict):
-    id: str
-    username: str
-    password: str
-    roles: List[str]
-
-
 @dataclass()
 class MemoryUserRepo:
-    users: List[UserModel] = field(default_factory=lambda: [])
+    connection: Storage
 
     def save(self, user: User) -> None:
-        self.users.append(self.__to_storage(user))
+        self.connection.users.append(self.__to_storage(user))
 
     def get(self, id: str) -> User:
         try:
-            result = next((user for user in self.users if user["id"] == id))
+            result = next((user for user in self.connection.users if user["id"] == id))
         except StopIteration:
             raise NotFoundError
 
