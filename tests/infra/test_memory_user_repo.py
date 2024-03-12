@@ -1,7 +1,8 @@
+from typing import List
 import pytest
 from src.infra.storage import Storage
 from src.domain.not_found_error import NotFoundError
-from src.domain.user import User
+from src.domain.user import Roles, User
 from src.infra.memory_user_repo import MemoryUserRepo, UserModel
 
 
@@ -12,7 +13,7 @@ def empty_repository():
 
 @pytest.fixture
 def loaded_repository():
-    storage_users: UserModel = [
+    storage_users: List[UserModel] = [
         {
             "id": "id",
             "username": "username",
@@ -23,7 +24,7 @@ def loaded_repository():
             "id": "id_2",
             "username": "username_2",
             "password": "password_2",
-            "roles": ["admin"],
+            "roles": [],
         },
         {
             "id": "id_3",
@@ -44,7 +45,7 @@ def test_save(empty_repository):
         "password": "password",
         "roles": [],
     }
-    user = User(**storage_user)
+    user = empty_repository._to_user(storage_user)
     empty_repository.save(user)
     assert len(Storage().users) == 1 and Storage().users[0] == storage_user
 
@@ -54,7 +55,7 @@ def test_get(loaded_repository):
     """It should get the user with the corresponding id"""
     first_id = Storage().users[0]["id"]
     user = loaded_repository.get(first_id)
-    expected_user = User(**Storage().users[0])
+    expected_user = loaded_repository._to_user(Storage().users[0])
     assert user == expected_user
 
 

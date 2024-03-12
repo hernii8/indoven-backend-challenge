@@ -13,12 +13,13 @@ def client():
 @pytest.mark.usefixtures("reset_storage")
 def test_create_user(client):
     """It should create a new user"""
-    user_payload: UserPayload = {
-        "id": "id",
-        "username": "username",
-        "password": "password",
-        "roles": [],
-    }
+    user_payload = UserPayload.model_validate(
+        {
+            "username": "username",
+            "password": "password",
+            "roles": [],
+        }
+    )
     response = client.post(
         "/users/",
         json=user_payload,

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from src.infra.storage import Storage, UserModel
 from src.domain.not_found_error import NotFoundError
-from src.domain.user import User
+from src.domain.user import Roles, User
 
 
 @dataclass()
@@ -9,7 +9,7 @@ class MemoryUserRepo:
     connection: Storage
 
     def save(self, user: User) -> None:
-        self.connection.users.append(self.__to_storage(user))
+        self.connection.users.append(self._to_storage(user))
 
     def get(self, id: str) -> User:
         try:
@@ -17,9 +17,9 @@ class MemoryUserRepo:
         except StopIteration:
             raise NotFoundError
 
-        return self.__to_user(result)
+        return self._to_user(result)
 
-    def __to_storage(self, user: User):
+    def _to_storage(self, user: User):
         return {
             "id": user.id,
             "username": user.username,
@@ -27,5 +27,10 @@ class MemoryUserRepo:
             "roles": user.roles,
         }
 
-    def __to_user(self, storage_user: UserModel):
-        return User(**storage_user)
+    def _to_user(self, storage_user: UserModel):
+        return User(
+            id=storage_user["id"],
+            password=storage_user["password"],
+            username=storage_user["username"],
+            roles=[Roles.from_str(role) for role in storage_user["roles"]],
+        )
