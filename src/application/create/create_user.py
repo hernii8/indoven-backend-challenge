@@ -1,6 +1,6 @@
 from dataclasses import dataclass
-from src.domain.user_repo import UserRepository
-from src.domain.user import User
+from src.domain.repositories.user_repo import UserRepository
+from src.domain.entities.user import User
 
 
 @dataclass(frozen=True)

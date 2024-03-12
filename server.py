@@ -1,10 +1,10 @@
 from typing import List
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from src.domain.role_not_found_error import RoleNotFoundError
-from src.application.create_user import CreateUser
-from src.domain.user import Roles, User
-from src.infra.memory_user_repo import MemoryUserRepo
+from src.domain.errors.role_not_found_error import RoleNotFoundError
+from src.application.create.create_user import CreateUser
+from src.domain.entities.user import Roles, User
+from src.infra.memory_repositories.memory_user_repo import MemoryUserRepo
 from src.infra.storage import Storage
 
 

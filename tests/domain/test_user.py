@@ -1,4 +1,4 @@
-from src.domain.user import Roles, User
+from src.domain.entities.user import Roles, User
 
 
 def test_is_admin():

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from src.infra.storage import Storage, UserModel
-from src.domain.not_found_error import NotFoundError
-from src.domain.user import Roles, User
+from src.domain.errors.not_found_error import NotFoundError
+from src.domain.entities.user import Roles, User
 
 
 @dataclass()

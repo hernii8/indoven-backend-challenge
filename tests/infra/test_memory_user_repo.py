@@ -1,8 +1,8 @@
 from typing import List
 import pytest
 from src.infra.storage import Storage
-from src.domain.not_found_error import NotFoundError
-from src.infra.memory_user_repo import MemoryUserRepo, UserModel
+from src.domain.errors.not_found_error import NotFoundError
+from src.infra.memory_repositories.memory_user_repo import MemoryUserRepo, UserModel
 
 
 @pytest.fixture

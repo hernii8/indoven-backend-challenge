@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 import datetime
 from typing import List
-from src.domain.lead import Lead
+from src.domain.value_objects.lead import Lead
 
 
 @dataclass()
