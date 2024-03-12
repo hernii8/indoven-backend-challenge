@@ -25,3 +25,7 @@ class Singleton(type):
 @dataclass(frozen=True)
 class Storage(metaclass=Singleton):
     users: List[UserModel] = field(default_factory=lambda: [])
+
+    @classmethod
+    def reset(cls):
+        cls._instance = None

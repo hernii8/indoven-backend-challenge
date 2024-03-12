@@ -7,6 +7,7 @@ from src.infra.memory_user_repo import MemoryUserRepo, UserModel
 
 @pytest.fixture
 def empty_repository():
+    print(Storage._instance)
     return MemoryUserRepo(connection=Storage())
 
 
@@ -35,7 +36,9 @@ def loaded_repository():
     return MemoryUserRepo(connection=Storage(users=storage_users))
 
 
+@pytest.mark.usefixtures("reset_storage")
 def test_save(empty_repository):
+    print(Storage._instance)
     """It should save an user"""
     storage_user: UserModel = {
         "id": "id",
@@ -48,6 +51,7 @@ def test_save(empty_repository):
     assert len(Storage().users) == 1 and Storage().users[0] == storage_user
 
 
+@pytest.mark.usefixtures("reset_storage")
 def test_get(loaded_repository):
     """It should get the user with the corresponding id"""
     first_id = Storage().users[0]["id"]
