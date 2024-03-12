@@ -5,7 +5,7 @@ from src.domain.lead import Lead
 
 
 @dataclass()
-class ECG:
+class Electrocardiogram:
     id: str
     date: datetime.date
     leads: List[Lead]
