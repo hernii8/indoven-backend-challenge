@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import List
 from uuid import uuid4
-from domain.role_not_found_error import RoleNotFoundError
+from src.domain.role_not_found_error import RoleNotFoundError
 
 
 class Roles(Enum):

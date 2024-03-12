@@ -22,7 +22,25 @@ def test_create_user(client):
     )
     response = client.post(
         "/users/",
-        json=user_payload,
+        json=user_payload.model_dump(),
     )
     assert response.status_code == 201
     assert len(Storage().users) == 1 and Storage().users[0]["username"] == "username"
+
+
+@pytest.mark.e2e
+def test_role_error(client):
+    """It should throw an error when trying to create an user with an unexpected role"""
+    user_payload = UserPayload.model_validate(
+        {
+            "username": "username",
+            "password": "password",
+            "roles": ["wrong_role"],
+        }
+    )
+    response = client.post(
+        "/users/",
+        json=user_payload.model_dump(),
+    )
+    assert response.status_code == 400
+    assert len(Storage().users) == 0
