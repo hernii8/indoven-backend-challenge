@@ -4,8 +4,8 @@ from src.domain.ecg.ecg import Electrocardiogram
 
 
 class ECGRepository(Protocol):
-    def save(ecg: Electrocardiogram) -> None:
+    def save(self, ecg: Electrocardiogram) -> None:
         pass
 
-    def get(id: str) -> Electrocardiogram:
+    def get(self, id: str) -> Electrocardiogram:
         pass

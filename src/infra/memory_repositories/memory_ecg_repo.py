@@ -1,5 +1,7 @@
 from dataclasses import dataclass
+from datetime import datetime
 from src.domain.ecg.ecg import Electrocardiogram
+from src.domain.ecg.errors.ecg_not_found_error import ECGNotFoundError
 from src.domain.ecg.lead import Lead
 from src.infra.storage import ECGModel, LeadModel, Storage
 
@@ -12,7 +14,12 @@ class MemoryECGRepository:
         self.connection.ecgs.append(self.__to_storage(ecg))
 
     def get(self, id: str) -> Electrocardiogram:
-        pass
+        try:
+            result = next((ecg for ecg in self.connection.ecgs if ecg["id"] == id))
+        except StopIteration:
+            raise ECGNotFoundError
+
+        return self.__to_ecg(result)
 
     def __to_storage(self, ecg: Electrocardiogram) -> ECGModel:
         def lead_to_storage(lead: Lead) -> LeadModel:
@@ -24,6 +31,20 @@ class MemoryECGRepository:
 
         return {
             "id": ecg.id,
-            "date": str(ecg.date),
+            "date": ecg.date.strftime("%d/%m/%y %H:%M:%S"),
             "leads": [lead_to_storage(lead) for lead in ecg.leads],
         }
+
+    def __to_ecg(self, storage_ecg: ECGModel) -> Electrocardiogram:
+        def storage_to_lead(storage_lead: LeadModel) -> Lead:
+            return Lead(
+                name=storage_lead["name"],
+                n_samples=storage_lead["n_samples"],
+                signal=[int(value) for value in storage_lead["signal"].split(",")],
+            )
+
+        return Electrocardiogram(
+            id=storage_ecg["id"],
+            date=datetime.strptime(storage_ecg["date"], "%d/%m/%Y %H:%M:%S"),
+            leads=[storage_to_lead(lead) for lead in storage_ecg["leads"]],
+        )

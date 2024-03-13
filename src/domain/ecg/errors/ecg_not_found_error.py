@@ -1,0 +1,2 @@
+class ECGNotFoundError(Exception):
+    pass
