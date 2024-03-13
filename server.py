@@ -21,12 +21,7 @@ class UserPayload(BaseModel):
 @app.post("/users", status_code=201)
 def create_user(user_payload: UserPayload):
     try:
-        user_payload_asdict = user_payload.model_dump()
-        user_to_create = User(
-            username=user_payload_asdict["username"],
-            password=user_payload_asdict["username"],
-            roles=[Roles.from_str(role) for role in user_payload_asdict["roles"]],
-        )
+        user_to_create = User(**user_payload.model_dump())
         CreateUser(repo=user_repo, user=user_to_create).execute()
     except RoleNotFoundError:
         raise HTTPException(status_code=400, detail="The role added is not valid.")

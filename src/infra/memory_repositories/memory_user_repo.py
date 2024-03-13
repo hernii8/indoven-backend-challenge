@@ -28,9 +28,4 @@ class MemoryUserRepo:
         }
 
     def _to_user(self, storage_user: UserModel):
-        return User(
-            id=storage_user["id"],
-            password=storage_user["password"],
-            username=storage_user["username"],
-            roles=[Roles.from_str(role) for role in storage_user["roles"]],
-        )
+        return User(**storage_user)
