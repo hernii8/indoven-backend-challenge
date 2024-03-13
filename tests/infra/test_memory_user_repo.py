@@ -58,6 +58,15 @@ def test_get(loaded_repository):
     assert user == expected_user
 
 
+@pytest.mark.usefixtures("reset_storage")
+def test_get_by_username(loaded_repository):
+    """It should get the user with the corresponding id"""
+    first_username = Storage().users[0]["username"]
+    user = loaded_repository.get_by_username(first_username)
+    expected_user = loaded_repository._to_user(Storage().users[0])
+    assert user == expected_user
+
+
 def test_not_found(empty_repository):
     """It should raise an exception if the user cannot be found"""
     with pytest.raises(UserNotFoundError):
