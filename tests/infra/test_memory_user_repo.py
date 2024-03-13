@@ -46,7 +46,7 @@ def test_save(empty_repository):
     }
     user = empty_repository._to_user(storage_user)
     empty_repository.save(user)
-    assert len(Storage().users) == 1 and Storage().users[0] == storage_user
+    assert len(Storage().users) == 1 and Storage().users[0]["id"] == storage_user["id"]
 
 
 @pytest.mark.usefixtures("reset_storage")

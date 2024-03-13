@@ -5,6 +5,7 @@ from uuid import uuid4
 from src.domain.user.errors.invalid_password_error import InvalidPasswordError
 from src.domain.user.errors.invalid_username_error import InvalidUsernameError
 from src.domain.user.roles import Roles
+from src.infra.shared.hasher import Hasher
 from utils.type_guards import is_role_list, is_str_list
 
 
@@ -54,7 +55,7 @@ class User:
     def password(self, password: str):
         if len(password) < 8:
             raise InvalidPasswordError
-        self.__password = password
+        self.__password = Hasher.hash(password)
 
     @username.setter
     def username(self, username: str):
