@@ -32,3 +32,7 @@ class JWTToken:
     @access_token.setter
     def access_token(self, value):
         self.__access_token = value
+
+    @property
+    def value(self):
+        return {"access_token": self.access_token, "token_type": self.__token_type}
