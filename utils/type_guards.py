@@ -1,5 +1,4 @@
 from typing import Any, TypeGuard
-
 from src.domain.entities.user import Roles
 
 

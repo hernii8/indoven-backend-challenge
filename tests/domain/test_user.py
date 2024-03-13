@@ -1,8 +1,9 @@
 import pytest
-from src.domain.entities.user import Roles, User
+from src.domain.entities.user import User
 from src.domain.errors.invalid_password_error import InvalidPasswordError
 from src.domain.errors.invalid_username_error import InvalidUsernameError
 from src.domain.errors.role_not_found_error import RoleNotFoundError
+from src.domain.types.roles import Roles
 
 
 def test_is_admin():
