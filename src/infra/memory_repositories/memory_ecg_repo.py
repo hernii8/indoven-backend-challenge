@@ -31,7 +31,7 @@ class MemoryECGRepository:
 
         return {
             "id": ecg.id,
-            "date": ecg.date.strftime("%d/%m/%y %H:%M:%S"),
+            "date": ecg.date.strftime("%d/%m/%Y %H:%M:%S"),
             "leads": [lead_to_storage(lead) for lead in ecg.leads],
         }
 

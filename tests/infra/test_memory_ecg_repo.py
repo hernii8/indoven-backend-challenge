@@ -28,20 +28,34 @@ def loaded_ecg_repo() -> MemoryECGRepository:
 @pytest.mark.usefixtures("reset_storage")
 def test_create_ecg(empty_ecg_repo: MemoryECGRepository):
     """It should create an ECG"""
-    ecg = Electrocardiogram(
+    expected_date = "01/01/2024 09:00:00"
+    expected_ecg = Electrocardiogram(
         id="id",
-        date=datetime.datetime.now(),
-        leads=[Lead(name="name", signal=[1], n_samples=1)],
+        date=datetime.datetime.strptime(expected_date, "%d/%m/%Y %H:%M:%S"),
+        leads=[Lead(name="name", signal=[1, 2], n_samples=1)],
     )
-    empty_ecg_repo.save(ecg)
+    empty_ecg_repo.save(expected_ecg)
+    sut_ecg = Storage().ecgs[0]
     assert len(Storage().ecgs) == 1
-    assert Storage().ecgs[0]["id"] == ecg.id
+    assert sut_ecg["id"] == expected_ecg.id
+    assert sut_ecg["date"] == expected_date
+    assert sut_ecg["leads"][0]["name"] == "name"
+    assert sut_ecg["leads"][0]["signal"] == "1,2"
+    assert sut_ecg["leads"][0]["n_samples"] == 1
 
 
 @pytest.mark.usefixtures("reset_storage")
 def test_get_ecg(loaded_ecg_repo: MemoryECGRepository):
     """It should get an ECG by id"""
+    expected_date = "01/01/2024 09:00:00"
     expected = Storage().ecgs[0]
-    ecg = loaded_ecg_repo.get(expected["id"])
-    assert ecg.id == expected["id"]
-    assert len(ecg.leads) == 1 and ecg.leads[0].signal == [1, 2, 3]
+    sut_ecg = loaded_ecg_repo.get(expected["id"])
+
+    assert sut_ecg.id == expected["id"]
+    assert sut_ecg.date == datetime.datetime.strptime(
+        expected_date, "%d/%m/%Y %H:%M:%S"
+    )
+    assert len(sut_ecg.leads) == 1
+    assert sut_ecg.leads[0].name == "name"
+    assert sut_ecg.leads[0].n_samples == 1
+    assert sut_ecg.leads[0].signal == [1, 2, 3]
