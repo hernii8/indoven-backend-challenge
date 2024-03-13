@@ -1,7 +1,7 @@
 from typing import List
 import pytest
 from src.infra.storage import Storage
-from src.domain.errors.not_found_error import NotFoundError
+from src.domain.user.errors.user_not_found_error import UserNotFoundError
 from src.infra.memory_repositories.memory_user_repo import MemoryUserRepo, UserModel
 
 
@@ -60,5 +60,5 @@ def test_get(loaded_repository):
 
 def test_not_found(empty_repository):
     """It should raise an exception if the user cannot be found"""
-    with pytest.raises(NotFoundError):
+    with pytest.raises(UserNotFoundError):
         empty_repository.get("anything")

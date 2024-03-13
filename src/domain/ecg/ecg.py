@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 import datetime
 from typing import List
-from src.domain.entities.lead import Lead
+from src.domain.ecg.lead import Lead
 
 
 @dataclass()

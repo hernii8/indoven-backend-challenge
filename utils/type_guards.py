@@ -1,5 +1,5 @@
 from typing import Any, TypeGuard
-from src.domain.entities.user import Roles
+from src.domain.user.user import Roles
 
 
 def is_str_list(val: list[Any]) -> TypeGuard[list[str]]:

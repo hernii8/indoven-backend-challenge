@@ -1,6 +1,6 @@
 from __future__ import annotations
 from enum import Enum
-from src.domain.errors.role_not_found_error import RoleNotFoundError
+from src.domain.user.errors.role_not_found_error import RoleNotFoundError
 
 
 class Roles(Enum):

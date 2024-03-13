@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from src.infra.storage import Storage, UserModel
-from src.domain.errors.not_found_error import NotFoundError
-from src.domain.entities.user import User
+from src.domain.user.errors.user_not_found_error import UserNotFoundError
+from src.domain.user.user import User
 
 
 @dataclass()
@@ -15,7 +15,7 @@ class MemoryUserRepo:
         try:
             result = next((user for user in self.connection.users if user["id"] == id))
         except StopIteration:
-            raise NotFoundError
+            raise UserNotFoundError
 
         return self._to_user(result)
 

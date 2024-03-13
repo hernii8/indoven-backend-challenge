@@ -2,9 +2,9 @@ from __future__ import annotations
 import re
 from typing import List
 from uuid import uuid4
-from src.domain.errors.invalid_password_error import InvalidPasswordError
-from src.domain.errors.invalid_username_error import InvalidUsernameError
-from src.domain.types.roles import Roles
+from src.domain.user.errors.invalid_password_error import InvalidPasswordError
+from src.domain.user.errors.invalid_username_error import InvalidUsernameError
+from src.domain.user.roles import Roles
 from utils.type_guards import is_role_list, is_str_list
 
 
