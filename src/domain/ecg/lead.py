@@ -1,9 +1,9 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List
 
 
 @dataclass()
 class Lead:
     name: str
-    n_samples: int | None
     signal: List[int]
+    n_samples: int | None = field(default=None)

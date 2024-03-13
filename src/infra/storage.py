@@ -13,6 +13,18 @@ class UserModel(TypedDict):
     roles: List[str]
 
 
+class LeadModel(TypedDict):
+    name: str
+    n_samples: int | None
+    signal: str
+
+
+class ECGModel(TypedDict):
+    id: str
+    date: str
+    leads: List[LeadModel]
+
+
 class Singleton(type):
     _instance = None
 
@@ -24,7 +36,8 @@ class Singleton(type):
 
 @dataclass(frozen=True)
 class Storage(metaclass=Singleton):
-    users: List[UserModel] = field(default_factory=lambda: [])
+    users: List[UserModel] = field(default_factory=list)
+    ecgs: List[ECGModel] = field(default_factory=list)
 
     @classmethod
     def reset(cls):
