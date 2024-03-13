@@ -23,7 +23,8 @@ class User:
         id: str | None = None,
     ):
         self.id = id
-        self.password = password
+        # TODO: Check this
+        self.__password = password
         self.username = username
         self.roles = roles
 
