@@ -6,12 +6,12 @@ from src.infra.memory_repositories.memory_user_repo import MemoryUserRepo, UserM
 
 
 @pytest.fixture
-def empty_repository():
+def empty_repository() -> MemoryUserRepo:
     return MemoryUserRepo(connection=Storage())
 
 
 @pytest.fixture
-def loaded_repository():
+def loaded_repository() -> MemoryUserRepo:
     storage_users: List[UserModel] = [
         {
             "id": "id",
@@ -38,7 +38,7 @@ def loaded_repository():
 @pytest.mark.usefixtures("reset_storage")
 def test_save(empty_repository):
     """It should save an user"""
-    storage_user: UserModel = {
+    storage_user = {
         "id": "id",
         "username": "username",
         "password": "password",
