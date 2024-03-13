@@ -25,6 +25,8 @@ build-backend = "poetry.core.masonry.api"
 markers = [
     "e2e: marks tests as e2e, creating a fake API for testing (deselect with '-m \"not e2e\"')",
 ]
+filterwarnings = ["ignore::DeprecationWarning:httpx"]
+
 
 [tool.mypy]
 ignore_missing_imports = true
