@@ -19,6 +19,16 @@ class MemoryUserRepo:
 
         return self._to_user(result)
 
+    def get_by_username(self, username: str) -> User:
+        try:
+            result = next(
+                (user for user in self.connection.users if user["username"] == username)
+            )
+        except StopIteration:
+            raise UserNotFoundError
+
+        return self._to_user(result)
+
     def _to_storage(self, user: User) -> UserModel:
         return {
             "id": user.id,

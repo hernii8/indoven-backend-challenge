@@ -8,3 +8,6 @@ class UserRepository(Protocol):
 
     def get(self, id: str) -> User:
         pass
+
+    def get_by_username(self, username: str) -> User:
+        pass
