@@ -35,21 +35,13 @@ class User:
     def id(self):
         return self.__id
 
-    @property
-    def password(self):
-        return self.__password
-
-    @property
-    def username(self):
-        return self.__username
-
-    @property
-    def roles(self):
-        return self.__roles
-
     @id.setter
     def id(self, id: str | None):
         self.__id = id or str(uuid4())
+
+    @property
+    def password(self):
+        return self.__password
 
     @password.setter
     def password(self, password: str):
@@ -57,11 +49,19 @@ class User:
             raise InvalidPasswordError
         self.__password = Hasher.hash(password)
 
+    @property
+    def username(self):
+        return self.__username
+
     @username.setter
     def username(self, username: str):
         if not re.match(r"[a-zA-Z0-9]+", username):
             raise InvalidUsernameError
         self.__username = username
+
+    @property
+    def roles(self):
+        return self.__roles
 
     @roles.setter
     def roles(self, roles: List[Roles] | list[str]):
@@ -70,5 +70,7 @@ class User:
         elif is_role_list(roles):
             self.__roles = roles
 
-    def __eq__(self, other: User) -> bool:
+    def __eq__(self, other: object) -> bool:
+        if not hasattr(other, "id"):
+            return False
         return other.id == self.id
