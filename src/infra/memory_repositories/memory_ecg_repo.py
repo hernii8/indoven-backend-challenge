@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import List
 from src.domain.ecg.ecg import Electrocardiogram
 from src.domain.ecg.errors.ecg_not_found_error import ECGNotFoundError
 from src.domain.ecg.lead import Lead
