@@ -8,20 +8,20 @@ from src.infra.storage import Storage
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="jwt")
 user_repo = MemoryUserRepo(
     Storage(
-        users=[
-            {
-                "id": "id",
-                "username": "username",
-                "password": Hasher.hash("password"),
-                "roles": [],
-            },
-            {
-                "id": "id",
-                "username": "admin",
-                "password": Hasher.hash("adminpass"),
-                "roles": ["admin"],
-            },
-        ]
+        # users=[
+        #     {
+        #         "id": "id",
+        #         "username": "username",
+        #         "password": Hasher.hash("password"),
+        #         "roles": [],
+        #     },
+        #     {
+        #         "id": "id",
+        #         "username": "admin",
+        #         "password": Hasher.hash("adminpass"),
+        #         "roles": ["admin"],
+        #     },
+        # ]
     )
 )
 ecg_repo = MemoryECGRepository(Storage())
