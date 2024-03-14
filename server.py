@@ -9,8 +9,14 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="jwt")
 user_repo = MemoryUserRepo(
     Storage(
         users=[
-            {"username": "username", "password": Hasher.hash("password"), "roles": []},
             {
+                "id": "id",
+                "username": "username",
+                "password": Hasher.hash("password"),
+                "roles": [],
+            },
+            {
+                "id": "id",
                 "username": "admin",
                 "password": Hasher.hash("adminpass"),
                 "roles": ["admin"],
