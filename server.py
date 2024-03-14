@@ -1,30 +1,15 @@
 from fastapi import FastAPI
-from fastapi.security import OAuth2PasswordBearer
-from src.infra.memory_repositories.memory_ecg_repo import MemoryECGRepository
-from src.infra.memory_repositories.memory_user_repo import MemoryUserRepo
-from src.infra.shared.hasher import Hasher
-from src.infra.storage import Storage
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="jwt")
-user_repo = MemoryUserRepo(
-    Storage(
-        # users=[
-        #     {
-        #         "id": "id",
-        #         "username": "username",
-        #         "password": Hasher.hash("password"),
-        #         "roles": [],
-        #     },
-        #     {
-        #         "id": "id",
-        #         "username": "admin",
-        #         "password": Hasher.hash("adminpass"),
-        #         "roles": ["admin"],
-        #     },
-        # ]
-    )
-)
-ecg_repo = MemoryECGRepository(Storage())
-
+import uvicorn
+from src.routes.get.get_metrics import router as get_metrics_router
+from src.routes.post.create_ecg import router as create_ecg_router
+from src.routes.post.login import router as login_router
+from src.routes.post.create_user import router as create_user_router
 
 app = FastAPI()
+app.include_router(get_metrics_router)
+app.include_router(create_ecg_router)
+app.include_router(create_user_router)
+app.include_router(login_router)
+
+if __name__ == "__main__":
+    uvicorn.run(app)

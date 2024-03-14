@@ -1,4 +1,5 @@
 from datetime import timedelta, timezone, datetime
+from typing import Any, cast
 from jwt import encode, decode
 
 SECRET_KEY = "bba820ebc09747e94a63a99d168932f011b2dccf05ef622080e39e35151332aa"
@@ -19,7 +20,9 @@ class JWTToken:
         to_encode = data.copy()
         expires_in = datetime.now(timezone.utc) + minutes_to_expire
         to_encode.update({"exp": expires_in})
-        self.access_token = encode(to_encode, SECRET_KEY, algorithm=DEFAULT_ALGORITHM)
+        self.access_token = encode(
+            cast(dict[str, Any], to_encode), SECRET_KEY, algorithm=DEFAULT_ALGORITHM
+        )
 
     @staticmethod
     def decrypt(token):

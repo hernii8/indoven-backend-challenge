@@ -1,9 +1,8 @@
-from http.client import HTTPException
 from typing import Annotated
-from fastapi import Depends
+from fastapi import Depends, HTTPException
 import jwt
 from src.infra.shared.jwt import JWTToken
-from server import oauth2_scheme
+from src.routes.dependencies import oauth2_scheme
 from src.routes.post.login import TokenContent
 
 

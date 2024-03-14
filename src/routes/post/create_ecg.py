@@ -2,12 +2,15 @@ from datetime import datetime
 from typing import List, Optional
 from fastapi import Depends, HTTPException
 from pydantic import BaseModel
-from server import app, ecg_repo
+from src.routes.dependencies import ecg_repo
 from src.application.create.create_ecg import CreateECG
 from src.domain.ecg.ecg import Electrocardiogram
 from src.domain.ecg.lead import Lead
 from src.routes.middlewares.token_validator import validate_token
 from src.routes.post.login import TokenContent
+from fastapi import APIRouter
+
+router = APIRouter()
 
 
 class CreateLeadPayload(BaseModel):
@@ -22,7 +25,7 @@ class CreateECGPayload(BaseModel):
     leads: List[CreateLeadPayload]
 
 
-@app.post("/ecgs", status_code=201)
+@router.post("/ecgs", status_code=201)
 def create_ecg(
     ecg_payload: CreateECGPayload, token_content: TokenContent = Depends(validate_token)
 ):

@@ -1,17 +1,22 @@
-from typing import Annotated
+from datetime import datetime
+from typing import Annotated, Optional, cast
 from typing_extensions import TypedDict
 from fastapi import Depends, HTTPException
-from server import app, user_repo
+from src.routes.dependencies import user_repo
 from fastapi.security import OAuth2PasswordRequestForm
 from src.application.get.login import Login
 from src.domain.user.errors.incorrect_password_error import IncorrectPasswordError
 from src.domain.user.errors.user_not_found_error import UserNotFoundError
 from src.infra.shared.jwt import JWTToken
+from fastapi import APIRouter
+
+router = APIRouter()
 
 
-class TokenContent(TypedDict):
+class TokenContent(TypedDict, total=False):
     sub: str
     is_admin: bool
+    exp: Optional[datetime]
 
 
 class TokenPayload(TypedDict):
@@ -19,7 +24,7 @@ class TokenPayload(TypedDict):
     token_type: str
 
 
-@app.post("/jwt")
+@router.post("/jwt")
 async def login(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
 ) -> TokenPayload:
@@ -32,4 +37,4 @@ async def login(
 
     content: TokenContent = {"sub": user.id, "is_admin": user.is_admin}
 
-    return JWTToken(content).value
+    return JWTToken(cast(dict, content)).value
