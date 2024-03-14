@@ -2,7 +2,8 @@ from fastapi.testclient import TestClient
 import pytest
 from src.infra.shared.jwt import JWTToken
 from src.infra.storage import Storage
-from server import app, UserPayload
+from server import app
+from src.routes.create_user import CreateUserPayload
 
 
 @pytest.fixture
@@ -24,7 +25,7 @@ def not_admin_token() -> JWTToken:
 @pytest.mark.usefixtures("reset_storage")
 def test_create_user(client: TestClient, admin_token: JWTToken):
     """It should create a new user"""
-    user_payload = UserPayload.model_validate(
+    user_payload = CreateUserPayload.model_validate(
         {
             "username": "username",
             "password": "password",
@@ -43,7 +44,7 @@ def test_create_user(client: TestClient, admin_token: JWTToken):
 @pytest.mark.e2e
 def test_role_error(client: TestClient, admin_token: JWTToken):
     """It should throw an error when trying to create an user with an unexpected role"""
-    user_payload = UserPayload.model_validate(
+    user_payload = CreateUserPayload.model_validate(
         {
             "username": "username",
             "password": "password",
@@ -62,7 +63,7 @@ def test_role_error(client: TestClient, admin_token: JWTToken):
 @pytest.mark.e2e
 def test_not_admin_creation_error(client: TestClient, not_admin_token: JWTToken):
     """It should not authorize the requests to create an user if the creator is not an admin"""
-    user_payload = UserPayload.model_validate(
+    user_payload = CreateUserPayload.model_validate(
         {
             "username": "username",
             "password": "password",
