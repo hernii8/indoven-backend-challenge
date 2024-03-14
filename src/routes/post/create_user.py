@@ -1,12 +1,12 @@
-from typing import Annotated, List
+from typing import List
 from fastapi import Depends, HTTPException
 from pydantic import BaseModel
-from server import app, oauth2_scheme, user_repo
-import jwt
+from server import app, user_repo
 from src.application.create.create_user import CreateUser
 from src.domain.user.errors.role_not_found_error import RoleNotFoundError
 from src.domain.user.user import User
-from src.infra.shared.jwt import JWTToken
+from src.routes.middlewares.token_validator import validate_token
+from src.routes.post.login import TokenContent
 
 
 class CreateUserPayload(BaseModel):
@@ -17,13 +17,10 @@ class CreateUserPayload(BaseModel):
 
 @app.post("/users", status_code=201)
 def create_user(
-    user_payload: CreateUserPayload, token: Annotated[str, Depends(oauth2_scheme)]
+    user_payload: CreateUserPayload,
+    token_content: TokenContent = Depends(validate_token),
 ):
-    try:
-        payload = JWTToken.decrypt(token)
-    except jwt.DecodeError:
-        raise HTTPException(status_code=400, detail="Invalid token")
-    if not payload.get("is_admin"):
+    if not token_content["is_admin"]:
         raise HTTPException(status_code=401, detail="Unauthorized")
     try:
         user_to_create = User(**user_payload.model_dump())

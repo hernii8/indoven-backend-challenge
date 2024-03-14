@@ -1,13 +1,13 @@
 from datetime import datetime
-from typing import Annotated, List, Optional
+from typing import List, Optional
 from fastapi import Depends, HTTPException
-import jwt
 from pydantic import BaseModel
-from server import app, oauth2_scheme, ecg_repo
+from server import app, ecg_repo
 from src.application.create.create_ecg import CreateECG
 from src.domain.ecg.ecg import Electrocardiogram
 from src.domain.ecg.lead import Lead
-from src.infra.shared.jwt import JWTToken
+from src.routes.middlewares.token_validator import validate_token
+from src.routes.post.login import TokenContent
 
 
 class CreateLeadPayload(BaseModel):
@@ -24,15 +24,11 @@ class CreateECGPayload(BaseModel):
 
 @app.post("/ecgs", status_code=201)
 def create_ecg(
-    ecg_payload: CreateECGPayload, token: Annotated[str, Depends(oauth2_scheme)]
+    ecg_payload: CreateECGPayload, token_content: TokenContent = Depends(validate_token)
 ):
-    try:
-        payload = JWTToken.decrypt(token)
-    except jwt.DecodeError:
-        raise HTTPException(status_code=400, detail="Invalid token")
-    if payload.get("is_admin"):
+    if token_content["is_admin"]:
         raise HTTPException(status_code=401, detail="Unauthorized")
-    ecg_to_create = ecg_payload_to_ecg(ecg_payload, payload.get("sub"))
+    ecg_to_create = ecg_payload_to_ecg(ecg_payload, token_content["sub"])
     CreateECG(repo=ecg_repo, ecg=ecg_to_create).execute()
 
 
