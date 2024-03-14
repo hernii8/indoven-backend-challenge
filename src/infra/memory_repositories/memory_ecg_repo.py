@@ -22,9 +22,6 @@ class MemoryECGRepository:
 
         return self.__to_ecg(result)
 
-    def calculate_zero_crosses(self, leads: List[Lead]) -> int:
-        return 0
-
     def __to_storage(self, ecg: Electrocardiogram) -> ECGModel:
         def lead_to_storage(lead: Lead) -> LeadModel:
             return {

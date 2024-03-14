@@ -11,6 +11,6 @@ class CreateECG:
 
     def execute(self):
         self.ecg.zero_crossings = MetricsCalculator(
-            ecg=self.ecg, ecg_repo=self.repo
-        ).calculate_zero_crosses()
+            ecg=self.ecg
+        ).calculate_zero_crossings()
         self.repo.save(self.ecg)
