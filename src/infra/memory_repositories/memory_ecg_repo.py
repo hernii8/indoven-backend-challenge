@@ -38,6 +38,7 @@ class MemoryECGRepository:
             "date": ecg.date.strftime("%d/%m/%Y %H:%M:%S"),
             "leads": [lead_to_storage(lead) for lead in ecg.leads],
             "zero_crossings": ecg.zero_crossings,
+            "uploader_id": ecg.uploader_id,
         }
 
     def __to_ecg(self, storage_ecg: ECGModel) -> Electrocardiogram:
@@ -53,4 +54,5 @@ class MemoryECGRepository:
             date=datetime.strptime(storage_ecg["date"], "%d/%m/%Y %H:%M:%S"),
             leads=[storage_to_lead(lead) for lead in storage_ecg["leads"]],
             zero_crossings=storage_ecg["zero_crossings"],
+            uploader_id=storage_ecg["uploader_id"],
         )

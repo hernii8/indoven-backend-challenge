@@ -21,6 +21,7 @@ def loaded_ecg_repo() -> MemoryECGRepository:
             "date": "01/01/2024 09:00:00",
             "leads": [{"name": "name", "n_samples": 1, "signal": "1,2,3"}],
             "zero_crossings": 1,
+            "uploader_id": "uploader_id",
         }
     ]
     return MemoryECGRepository(Storage(ecgs=sample_ecgs))
@@ -34,6 +35,7 @@ def test_create_ecg(empty_ecg_repo: MemoryECGRepository):
         id="id",
         date=datetime.datetime.strptime(expected_date, "%d/%m/%Y %H:%M:%S"),
         leads=[Lead(name="name", signal=[1, 2], n_samples=1)],
+        uploader_id="uploader_id",
     )
     empty_ecg_repo.save(expected_ecg)
     sut_ecg = Storage().ecgs[0]

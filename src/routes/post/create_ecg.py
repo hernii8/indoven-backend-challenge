@@ -32,11 +32,11 @@ def create_ecg(
         raise HTTPException(status_code=400, detail="Invalid token")
     if payload.get("is_admin"):
         raise HTTPException(status_code=401, detail="Unauthorized")
-    ecg_to_create = ecg_payload_to_ecg(ecg_payload)
+    ecg_to_create = ecg_payload_to_ecg(ecg_payload, payload.get("sub"))
     CreateECG(repo=ecg_repo, ecg=ecg_to_create).execute()
 
 
-def ecg_payload_to_ecg(payload: CreateECGPayload) -> Electrocardiogram:
+def ecg_payload_to_ecg(payload: CreateECGPayload, user_id: str) -> Electrocardiogram:
     return Electrocardiogram(
         id=payload.id,
         date=datetime.strptime(payload.date, "%d/%m/%Y %H:%M:%S"),
@@ -48,4 +48,5 @@ def ecg_payload_to_ecg(payload: CreateECGPayload) -> Electrocardiogram:
             )
             for lead in payload.leads
         ],
+        uploader_id=user_id,
     )

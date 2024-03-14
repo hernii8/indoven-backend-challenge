@@ -1,0 +1,2 @@
+class NotECGOwnerError(Exception):
+    pass

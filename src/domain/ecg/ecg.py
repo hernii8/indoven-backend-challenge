@@ -9,4 +9,5 @@ class Electrocardiogram:
     id: str
     date: datetime.date
     leads: List[Lead]
+    uploader_id: str
     zero_crossings: int | None = None
