@@ -20,6 +20,7 @@ def loaded_ecg_repo() -> MemoryECGRepository:
             "id": "id",
             "date": "01/01/2024 09:00:00",
             "leads": [{"name": "name", "n_samples": 1, "signal": "1,2,3"}],
+            "zero_crossings": 1,
         }
     ]
     return MemoryECGRepository(Storage(ecgs=sample_ecgs))

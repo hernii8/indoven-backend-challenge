@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
+from typing import List
 from src.domain.ecg.ecg import Electrocardiogram
 from src.domain.ecg.errors.ecg_not_found_error import ECGNotFoundError
 from src.domain.ecg.lead import Lead
@@ -21,6 +22,9 @@ class MemoryECGRepository:
 
         return self.__to_ecg(result)
 
+    def calculate_zero_crosses(self, leads: List[Lead]) -> int:
+        return 0
+
     def __to_storage(self, ecg: Electrocardiogram) -> ECGModel:
         def lead_to_storage(lead: Lead) -> LeadModel:
             return {
@@ -33,6 +37,7 @@ class MemoryECGRepository:
             "id": ecg.id,
             "date": ecg.date.strftime("%d/%m/%Y %H:%M:%S"),
             "leads": [lead_to_storage(lead) for lead in ecg.leads],
+            "zero_crossings": ecg.zero_crossings,
         }
 
     def __to_ecg(self, storage_ecg: ECGModel) -> Electrocardiogram:
@@ -47,4 +52,5 @@ class MemoryECGRepository:
             id=storage_ecg["id"],
             date=datetime.strptime(storage_ecg["date"], "%d/%m/%Y %H:%M:%S"),
             leads=[storage_to_lead(lead) for lead in storage_ecg["leads"]],
+            zero_crossings=storage_ecg["zero_crossings"],
         )

@@ -23,6 +23,7 @@ class ECGModel(TypedDict):
     id: str
     date: str
     leads: List[LeadModel]
+    zero_crossings: int | None
 
 
 class Singleton(type):
