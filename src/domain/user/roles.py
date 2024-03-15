@@ -9,6 +9,6 @@ class Roles(Enum):
     @classmethod
     def from_str(cls, value: str) -> Roles:
         try:
-            return Roles[value]
+            return Roles(value)
         except KeyError:
             raise RoleNotFoundError
