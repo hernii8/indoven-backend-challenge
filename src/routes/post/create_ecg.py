@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import List, Optional
 from fastapi import Depends, HTTPException
 from pydantic import BaseModel
+from src.domain.user.errors.unauthorized_error import UnauthorizedError
 from src.routes.dependencies import ecg_repo
 from src.application.create.create_ecg import CreateECG
 from src.domain.ecg.ecg import Electrocardiogram
@@ -29,10 +30,13 @@ class CreateECGPayload(BaseModel):
 def create_ecg(
     ecg_payload: CreateECGPayload, token_content: TokenContent = Depends(validate_token)
 ):
-    if token_content["is_admin"]:
-        raise HTTPException(status_code=401, detail="Unauthorized")
     ecg_to_create = ecg_payload_to_ecg(ecg_payload, token_content["sub"])
-    CreateECG(repo=ecg_repo, ecg=ecg_to_create).execute()
+    try:
+        CreateECG(repo=ecg_repo, ecg=ecg_to_create).execute(
+            is_admin=token_content["is_admin"]
+        )
+    except UnauthorizedError:
+        raise HTTPException(status_code=401, detail="Unauthorized")
 
 
 def ecg_payload_to_ecg(payload: CreateECGPayload, user_id: str) -> Electrocardiogram:

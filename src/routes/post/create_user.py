@@ -1,6 +1,7 @@
 from typing import List
 from fastapi import Depends, HTTPException
 from pydantic import BaseModel
+from src.domain.user.errors.unauthorized_error import UnauthorizedError
 from src.routes.dependencies import user_repo
 from src.application.create.create_user import CreateUser
 from src.domain.user.errors.role_not_found_error import RoleNotFoundError
@@ -23,10 +24,12 @@ def create_user(
     user_payload: CreateUserPayload,
     token_content: TokenContent = Depends(validate_token),
 ):
-    if not token_content["is_admin"]:
-        raise HTTPException(status_code=401, detail="Unauthorized")
     try:
         user_to_create = User(**user_payload.model_dump())
-        CreateUser(repo=user_repo, user=user_to_create).execute()
+        CreateUser(repo=user_repo, user=user_to_create).execute(
+            is_admin=token_content["is_admin"]
+        )
     except RoleNotFoundError:
         raise HTTPException(status_code=400, detail="The role added is not valid")
+    except UnauthorizedError:
+        raise HTTPException(status_code=401, detail="Unauthorized")
