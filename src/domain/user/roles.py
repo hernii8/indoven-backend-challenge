@@ -10,5 +10,5 @@ class Roles(Enum):
     def from_str(cls, value: str) -> Roles:
         try:
             return Roles(value)
-        except KeyError:
+        except ValueError:
             raise RoleNotFoundError
