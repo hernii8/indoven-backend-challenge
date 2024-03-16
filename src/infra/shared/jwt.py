@@ -4,7 +4,7 @@ from jwt import encode, decode
 
 SECRET_KEY = "bba820ebc09747e94a63a99d168932f011b2dccf05ef622080e39e35151332aa"
 DEFAULT_ALGORITHM = "HS256"
-DEFAULT_ACCESS_TOKEN_EXPIRE_MINUTES = timedelta(minutes=30)
+DEFAULT_ACCESS_TOKEN_EXPIRE_MILLISECONDS = 8.64e7  # 1 day
 TOKEN_TYPE = "bearer"
 
 
@@ -15,10 +15,12 @@ class JWTToken:
     def __init__(
         self,
         data: dict,
-        minutes_to_expire: timedelta = DEFAULT_ACCESS_TOKEN_EXPIRE_MINUTES,
+        milliseconds_to_expire: float = DEFAULT_ACCESS_TOKEN_EXPIRE_MILLISECONDS,
     ):
         to_encode = data.copy()
-        expires_in = datetime.now(timezone.utc) + minutes_to_expire
+        expires_in = datetime.now(timezone.utc) + timedelta(
+            milliseconds=milliseconds_to_expire
+        )
         to_encode.update({"exp": expires_in})
         self.access_token = encode(
             cast(dict[str, Any], to_encode), SECRET_KEY, algorithm=DEFAULT_ALGORITHM
@@ -26,7 +28,12 @@ class JWTToken:
 
     @staticmethod
     def decrypt(token):
-        return decode(token, SECRET_KEY, algorithms=[DEFAULT_ALGORITHM])
+        return decode(
+            token,
+            SECRET_KEY,
+            algorithms=[DEFAULT_ALGORITHM],
+            options={"verify_signature": True, "verify_exp": True},
+        )
 
     @property
     def access_token(self):
