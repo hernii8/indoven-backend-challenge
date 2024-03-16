@@ -38,4 +38,8 @@ class MemoryUserRepo:
         }
 
     def _to_user(self, storage_user: UserModel) -> User:
-        return User(**storage_user)
+        return User(
+            id=storage_user["id"],
+            username=storage_user["username"],
+            roles=storage_user["roles"],
+        ).with_hashed_password(storage_user["password"])

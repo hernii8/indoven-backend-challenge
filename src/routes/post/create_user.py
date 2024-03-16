@@ -27,7 +27,9 @@ def create_user(
     token_content: TokenContent = Depends(validate_token),
 ):
     try:
-        user_to_create = User(**user_payload.model_dump())
+        user_to_create = User(
+            username=user_payload.username, roles=user_payload.roles
+        ).with_plain_password(user_payload.password)
         CreateUser(repo=user_repo, user=user_to_create).execute(
             is_admin=token_content["is_admin"]
         )

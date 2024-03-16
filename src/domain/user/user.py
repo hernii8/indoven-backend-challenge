@@ -18,13 +18,10 @@ class User:
     def __init__(
         self,
         username: str,
-        password: str,
         roles: List[Roles] | List[str],
         id: str | None = None,
     ):
         self.id = id
-        # TODO: Check this
-        self.__password = password
         self.username = username
         self.roles = roles
 
@@ -43,12 +40,6 @@ class User:
     @property
     def password(self):
         return self.__password
-
-    @password.setter
-    def password(self, password: str):
-        if len(password) < 8:
-            raise InvalidPasswordError
-        self.__password = Hasher.hash(password)
 
     @property
     def username(self):
@@ -75,3 +66,13 @@ class User:
         if not hasattr(other, "id"):
             return False
         return other.id == self.id
+
+    def with_plain_password(self, password: str) -> User:
+        if len(password) < 8:
+            raise InvalidPasswordError
+        self.__password = Hasher.hash(password)
+        return self
+
+    def with_hashed_password(self, password: str) -> User:
+        self.__password = password
+        return self
