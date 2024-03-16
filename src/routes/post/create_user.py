@@ -1,6 +1,8 @@
 from typing import List
 from fastapi import Depends, HTTPException
 from pydantic import BaseModel
+from src.domain.user.errors.invalid_password_error import InvalidPasswordError
+from src.domain.user.errors.invalid_username_error import InvalidUsernameError
 from src.domain.user.errors.unauthorized_error import UnauthorizedError
 from src.routes.dependencies import user_repo
 from src.application.create.create_user import CreateUser
@@ -30,6 +32,10 @@ def create_user(
             is_admin=token_content["is_admin"]
         )
     except RoleNotFoundError:
-        raise HTTPException(status_code=400, detail="The role added is not valid")
+        raise HTTPException(status_code=400, detail="The role is not valid")
+    except InvalidUsernameError:
+        raise HTTPException(status_code=400, detail="The username is not valid")
+    except InvalidPasswordError:
+        raise HTTPException(status_code=400, detail="The password is not valid")
     except UnauthorizedError:
         raise HTTPException(status_code=401, detail="Unauthorized")
