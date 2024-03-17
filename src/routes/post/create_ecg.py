@@ -11,6 +11,8 @@ from src.routes.middlewares.token_validator import validate_token
 from src.routes.post.login import TokenContent
 from fastapi import APIRouter
 
+from utils.date_converter import str_to_date
+
 router = APIRouter()
 
 
@@ -42,7 +44,7 @@ def create_ecg(
 def ecg_payload_to_ecg(payload: CreateECGPayload, user_id: str) -> Electrocardiogram:
     return Electrocardiogram(
         id=payload.id,
-        date=datetime.strptime(payload.date, "%d/%m/%Y %H:%M:%S"),
+        date=str_to_date(payload.date),
         leads=[
             Lead(
                 name=lead.name,

@@ -1,4 +1,3 @@
-import datetime
 from typing import List
 
 import pytest
@@ -6,6 +5,7 @@ from src.domain.ecg.ecg import Electrocardiogram
 from src.domain.ecg.lead import Lead
 from src.infra.memory_repositories.memory_ecg_repo import MemoryECGRepository
 from src.infra.storage import ECGModel, Storage
+from utils.date_converter import str_to_date
 
 
 @pytest.fixture
@@ -33,7 +33,7 @@ def test_create_ecg(empty_ecg_repo: MemoryECGRepository):
     expected_date = "01/01/2024 09:00:00"
     expected_ecg = Electrocardiogram(
         id="id",
-        date=datetime.datetime.strptime(expected_date, "%d/%m/%Y %H:%M:%S"),
+        date=str_to_date(expected_date),
         leads=[Lead(name="name", signal=[1, 2], n_samples=1)],
         uploader_id="uploader_id",
     )
@@ -55,9 +55,7 @@ def test_get_ecg(loaded_ecg_repo: MemoryECGRepository):
     sut_ecg = loaded_ecg_repo.get(expected["id"])
 
     assert sut_ecg.id == expected["id"]
-    assert sut_ecg.date == datetime.datetime.strptime(
-        expected_date, "%d/%m/%Y %H:%M:%S"
-    )
+    assert sut_ecg.date == str_to_date(expected_date)
     assert len(sut_ecg.leads) == 1
     assert sut_ecg.leads[0].name == "name"
     assert sut_ecg.leads[0].n_samples == 1

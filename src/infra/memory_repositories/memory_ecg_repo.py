@@ -1,9 +1,9 @@
 from dataclasses import dataclass
-from datetime import datetime
 from src.domain.ecg.ecg import Electrocardiogram
 from src.domain.ecg.errors.ecg_not_found_error import ECGNotFoundError
 from src.domain.ecg.lead import Lead
 from src.infra.storage import ECGModel, LeadModel, Storage
+from utils.date_converter import date_to_str, str_to_date
 
 
 @dataclass
@@ -31,7 +31,7 @@ class MemoryECGRepository:
 
         return {
             "id": ecg.id,
-            "date": ecg.date.strftime("%d/%m/%Y %H:%M:%S"),
+            "date": date_to_str(ecg.date),
             "leads": [lead_to_storage(lead) for lead in ecg.leads],
             "zero_crossings": ecg.zero_crossings,
             "uploader_id": ecg.uploader_id,
@@ -47,7 +47,7 @@ class MemoryECGRepository:
 
         return Electrocardiogram(
             id=storage_ecg["id"],
-            date=datetime.strptime(storage_ecg["date"], "%d/%m/%Y %H:%M:%S"),
+            date=str_to_date(storage_ecg["date"]),
             leads=[storage_to_lead(lead) for lead in storage_ecg["leads"]],
             zero_crossings=storage_ecg["zero_crossings"],
             uploader_id=storage_ecg["uploader_id"],
