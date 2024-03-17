@@ -1,4 +1,3 @@
-from datetime import datetime
 from typing import List, Optional
 from fastapi import Depends, HTTPException
 from pydantic import BaseModel
@@ -32,14 +31,15 @@ class CreateECGPayload(BaseModel):
 def create_ecg(
     ecg_payload: CreateECGPayload, token_content: TokenContent = Depends(validate_token)
 ):
-    ecg_to_create = ecg_payload_to_ecg(ecg_payload, token_content["sub"])
     try:
+        ecg_to_create = ecg_payload_to_ecg(ecg_payload, token_content["sub"])
         CreateECG(repo=ecg_repo, ecg=ecg_to_create).execute(
             is_admin=token_content["is_admin"]
         )
     except UnauthorizedError:
         raise HTTPException(status_code=401, detail="Unauthorized")
     except InvalidDateError:
+        print("EXCEPT")
         raise HTTPException(status_code=400, detail="Invalid date format")
 
 
