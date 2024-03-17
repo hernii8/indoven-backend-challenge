@@ -33,7 +33,7 @@ async def login(
             form_data.username, form_data.password
         )
     except (UserNotFoundError, IncorrectPasswordError):
-        raise HTTPException(status_code=400, detail="Incorrect username or password")
+        raise HTTPException(status_code=401, detail="Incorrect username or password")
 
     content: TokenContent = {"sub": user.id, "is_admin": user.is_admin}
 
