@@ -1,9 +1,19 @@
 from datetime import datetime
 
 
+class InvalidDateError(Exception):
+    pass
+
+
 def str_to_date(date: str) -> datetime:
-    return datetime.strptime(date, "%d/%m/%Y %H:%M:%S")
+    try:
+        return datetime.strptime(date, "%d/%m/%Y %H:%M:%S")
+    except ValueError:
+        raise InvalidDateError
 
 
 def date_to_str(date: datetime) -> str:
-    return date.strftime("%d/%m/%Y %H:%M:%S")
+    try:
+        return date.strftime("%d/%m/%Y %H:%M:%S")
+    except ValueError:
+        raise InvalidDateError

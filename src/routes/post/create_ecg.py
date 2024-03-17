@@ -11,7 +11,7 @@ from src.routes.middlewares.token_validator import validate_token
 from src.routes.post.login import TokenContent
 from fastapi import APIRouter
 
-from utils.date_converter import str_to_date
+from utils.date_converter import InvalidDateError, str_to_date
 
 router = APIRouter()
 
@@ -39,6 +39,8 @@ def create_ecg(
         )
     except UnauthorizedError:
         raise HTTPException(status_code=401, detail="Unauthorized")
+    except InvalidDateError:
+        raise HTTPException(status_code=400, detail="Invalid date format")
 
 
 def ecg_payload_to_ecg(payload: CreateECGPayload, user_id: str) -> Electrocardiogram:
