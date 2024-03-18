@@ -47,7 +47,6 @@ def create_ecg(
     except UnauthorizedError:
         raise HTTPException(status_code=401, detail="Unauthorized")
     except InvalidDateError:
-        print("EXCEPT")
         raise HTTPException(status_code=400, detail="Invalid date format")
 
 
