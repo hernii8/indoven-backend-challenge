@@ -24,10 +24,16 @@ class TokenPayload(TypedDict):
     token_type: str
 
 
-@router.post("/jwt")
+@router.post(
+    "/jwt",
+    responses={
+        404: {"description": "Incorrect username or password"},
+    },
+)
 async def login(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
 ) -> TokenPayload:
+    """Login and get a JWT token"""
     try:
         user = Login(user_repo=user_repo).execute(
             form_data.username, form_data.password

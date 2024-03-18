@@ -13,8 +13,16 @@ from src.routes.post.login import TokenContent
 router = APIRouter()
 
 
-@router.get("/ecgs/{ecg_id}/metrics", status_code=200)
+@router.get(
+    "/ecgs/{ecg_id}/metrics",
+    status_code=200,
+    responses={
+        404: {"description": "Electrocardiogram not found or metric not calculated"},
+        401: {"description": "Unauthorized"},
+    },
+)
 def get_metrics(ecg_id: str, token_content: TokenContent = Depends(validate_token)):
+    """Get the metrics related to the selected Electrocardiogram"""
     try:
         zero_crossings = GetMetrics(
             ecg_id=ecg_id, ecg_repo=ecg_repo, user_id=token_content["sub"]

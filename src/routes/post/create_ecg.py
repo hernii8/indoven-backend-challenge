@@ -27,10 +27,18 @@ class CreateECGPayload(BaseModel):
     leads: List[CreateLeadPayload]
 
 
-@router.post("/ecgs", status_code=201)
+@router.post(
+    "/ecgs",
+    status_code=201,
+    responses={
+        400: {"description": "Invalid date format"},
+        401: {"description": "Unauthorized"},
+    },
+)
 def create_ecg(
     ecg_payload: CreateECGPayload, token_content: TokenContent = Depends(validate_token)
 ):
+    """Create an Electrocardiogram"""
     try:
         ecg_to_create = ecg_payload_to_ecg(ecg_payload, token_content["sub"])
         CreateECG(repo=ecg_repo, ecg=ecg_to_create).execute(

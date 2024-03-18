@@ -21,11 +21,19 @@ class CreateUserPayload(BaseModel):
     roles: List[str]
 
 
-@router.post("/users", status_code=201)
+@router.post(
+    "/users",
+    status_code=201,
+    responses={
+        400: {"description": "Role, username or password not valid"},
+        401: {"description": "Unauthorized"},
+    },
+)
 def create_user(
     user_payload: CreateUserPayload,
     token_content: TokenContent = Depends(validate_token),
 ):
+    """Create an User"""
     try:
         user_to_create = User(
             username=user_payload.username, roles=user_payload.roles
