@@ -14,4 +14,4 @@ app.include_router(create_user_router)
 app.include_router(login_router)
 
 if __name__ == "__main__":
-    uvicorn.run(app)
+    uvicorn.run(app, host="0.0.0.0")
