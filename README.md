@@ -1,6 +1,6 @@
 # Indoven backend challenge
 
-This is the solution proposed for the backend coding challenge from Indoven for the role of backend engineer. You can check the requirements of the challenge [here] (https://github.com/idoven/backend-challenge/blob/main/README.md).
+This is the solution proposed for the backend coding challenge from Indoven for the role of backend engineer. You can check the requirements of the challenge [here](https://github.com/idoven/backend-challenge/blob/main/README.md).
 
 
 ## Install
