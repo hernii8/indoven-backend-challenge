@@ -18,7 +18,14 @@ $ docker build -t idoven-api .
 Then you can start the container.
 
 ```sh
-$ sudo docker run -p 8000:8000 -it --rm idoven-api
+$ docker run -p 8000:8000 -it --rm idoven-api
+```
+
+If you don't want to use docker, you can manually run the project using Poetry and Python:
+
+```sh
+$ poetry install
+$ python3 server.py
 ```
 
 To ensure that the application is working, and check the API documentation with the available endpoints, you can navigate to https://localhost:8000/docs.
