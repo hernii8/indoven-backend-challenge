@@ -7,7 +7,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from src.application.get.login import Login
 from src.domain.user.errors.incorrect_password_error import IncorrectPasswordError
 from src.domain.user.errors.user_not_found_error import UserNotFoundError
-from src.infra.shared.jwt import JWTToken
+from src.infra.jwt.jwt import JWTToken
 from fastapi import APIRouter
 
 router = APIRouter()

@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 import pytest
-from src.infra.shared.jwt import JWTToken
+from src.infra.jwt.jwt import JWTToken
 from src.infra.storage import Storage
 from server import app
 from src.routes.post.create_user import CreateUserPayload

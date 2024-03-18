@@ -2,7 +2,7 @@ import time
 
 import jwt
 import pytest
-from src.infra.shared.jwt import JWTToken
+from src.infra.jwt.jwt import JWTToken
 
 
 def test_verify_expiration():

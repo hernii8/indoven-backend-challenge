@@ -2,7 +2,7 @@ import pytest
 from src.application.get.login import Login
 from src.domain.user.errors.incorrect_password_error import IncorrectPasswordError
 from src.infra.memory_repositories.memory_user_repo import MemoryUserRepo
-from src.infra.shared.hasher import Hasher
+from src.infra.crypto.hasher import Hasher
 from src.infra.storage import Storage
 
 

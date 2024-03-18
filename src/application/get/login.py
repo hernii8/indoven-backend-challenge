@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from src.domain.user.errors.incorrect_password_error import IncorrectPasswordError
 from src.domain.user.user import User
 from src.domain.user.user_repo import UserRepository
-from src.infra.shared.hasher import Hasher
+from src.infra.crypto.hasher import Hasher
 
 
 @dataclass()

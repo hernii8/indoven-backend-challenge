@@ -3,7 +3,7 @@ from uuid import uuid4
 from fastapi.security import OAuth2PasswordBearer
 from src.infra.memory_repositories.memory_ecg_repo import MemoryECGRepository
 from src.infra.memory_repositories.memory_user_repo import MemoryUserRepo
-from src.infra.shared.hasher import Hasher
+from src.infra.crypto.hasher import Hasher
 from src.infra.storage import Storage
 
 ENV = os.environ.get("ENV")

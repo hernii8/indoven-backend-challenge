@@ -1,7 +1,7 @@
 from typing import Annotated
 from fastapi import Depends, HTTPException
 import jwt
-from src.infra.shared.jwt import JWTToken
+from src.infra.jwt.jwt import JWTToken
 from src.routes.dependencies import oauth2_scheme
 from src.routes.post.login import TokenContent
 
