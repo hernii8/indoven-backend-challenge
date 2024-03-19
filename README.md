@@ -21,7 +21,7 @@ Then you can start the container.
 $ docker run -p 8000:8000 -it --rm idoven-api
 ```
 
-If you don't want to use docker, you can manually run the project using Poetry and Python:
+If you don't want to use docker, you can manually run the project using [Poetry](https://python-poetry.org/) and [Python](https://www.python.org/):
 
 ```sh
 $ poetry install
